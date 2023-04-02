@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    {% load static %}
+    <title>Report</title>
+    <style>
+        .img-data {
+            display: flex;
+            height: 321px;
+            margin: 10px;
+        }
+        #top{
+            text-align: center;
+        }
+        div.flexbox{
+            display : flex;
+        }
+        h3,pre,span{
+            margin: 10px;
+        }
+        .box{
+            background-color: #e8e2d5;
+            height: 65px;
+            width: 450px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .response{
+            margin-left: 98px;
+        }
+
+        /*=================================================================*/
+        /*                     Face Emogi                              
+        /*=================================================================*/
+
+        .face {
+          position: fixed;
+          left: 90%;
+          top: 79%;
+          z-index: 100001;
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background: yellow;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .face::before {
+          /*In this part we will make
+        the mouth of the face*/
+          content: "";
+          position: absolute;
+          top: 60px;
+          width: 75px;
+          height: 35px;
+          background: red;
+          border-bottom-left-radius: 70px;
+          border-bottom-right-radius: 70px;
+          transition: 0.5s;
+        }
+
+        .face:hover::before {
+          /*Here we will add the hover effects.
+        Like when the cursor will came on the mouth the
+        mouth will closed that means is radius
+        will be decreased*/
+          top:60px;
+          width: 75px;
+          height: 10px;
+          background: black;
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
+        }
+
+        /*In this part we will make
+          the eyes of the face*/
+        .eyes {
+          position: relative;
+          top: -15px;
+          display: flex;
+        }
+
+        .eyes .eye {
+          position: relative;
+          width: 30px;
+          height: 30px;
+          display: block;
+          background: #fff;
+          margin: 0 7.5px;
+          border-radius: 50%;
+        }
+
+        .eyes .eye::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 25%;
+          transform: translate(-50%, -50%);
+          width: 20px;
+          height: 20px;
+          background: #000;
+          border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h1 id ="top">Upload the image of urine strip</h1>
+    <div class="box">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="image">Upload Image:</label>
+            <input type="file" name="image" id="image">
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+        
+    <h2 style="color:red" >Example</h2>
+    <div class="flexbox">
+        <h3 >Upload Image like - </h3>
+        <img class="img-data" src="{{image.image.url}}" alt="thumb" />
+        <div class="response">
+
+            <h3 >Response : </h3>
+            {% for label, rgb in data.items %}
+            <span>{{ label }}: {{ rgb }}</span><br>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+    <div class="face-emogi-body">
+        <div>
+            <div class="face">
+                <div class="eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // <!-- face emogi  -->
+	    document.addEventListener("mousemove", eyeball);
+	    function eyeball() {
+	      var eye = document.querySelectorAll(".eye");
+	      eye.forEach(function (eye) {
+	    	  let x = eye.getBoundingClientRect().left + eye.clientWidth / 2;
+	    	  let y = eye.getBoundingClientRect().top + eye.clientHeight / 2;
+	    	  let radian = Math.atan2(event.pageX - x, event.clientY - y);
+	    	  let rot = radian * (180 / Math.PI) * -1 + 270;
+	    	  eye.style.transform = "rotate(" + rot + "deg)";
+	      });
+	    }
+    </script>
+</body>
+</html>
